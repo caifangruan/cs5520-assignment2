@@ -1,4 +1,4 @@
-
+//style file
 export const colors = {
     primary: '#007AFF', 
     secondary: '#FFFFFF', 
