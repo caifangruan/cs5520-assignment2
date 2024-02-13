@@ -2,8 +2,7 @@
 import React, { useState, useContext } from 'react';
 import { Text, View, StyleSheet, Alert } from 'react-native';
 import InputField from '../components/InputField';
-import Button from '../components/Button';
-import ActivitiesContext from '../components/ActivitiesContext'; 
+import Button from '../components/Button'; 
 import { colors, spacing } from '../components/styles'; 
 
 const StartScreen = ({ navigation }) => {
@@ -11,7 +10,6 @@ const StartScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [emailError, setEmailError] = useState('');
   const [phoneError, setPhoneError] = useState('');
-  const { setActivities } = useContext(ActivitiesContext);
 
   const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
   const validatePhoneNumber = (phoneNumber) => /^\d{10}$/.test(phoneNumber);
