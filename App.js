@@ -1,4 +1,5 @@
-
+import { Fontisto } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import 'react-native-get-random-values';
 import React, { useState, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -10,6 +11,8 @@ import AllActivitiesScreen from './screens/AllActivitiesScreen';
 import SpecialActivitiesScreen from './screens/SpecialActivitiesScreen';
 import AddActivityScreen from './screens/AddActivityScreen';
 import { ActivitiesProvider } from './components/ActivitiesContext';
+import 'react-native-gesture-handler';
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -18,24 +21,30 @@ function MainTabNavigator() {
   return (
     
     <Tab.Navigator>
-      <Tab.Screen name="All Activities" component={AllActivitiesScreen} />
-      <Tab.Screen name="Special Activities" component={SpecialActivitiesScreen} />
+      <Tab.Screen 
+        name="All Activities" 
+        component={AllActivitiesScreen} 
+        options={{
+          tabBarIcon: ({}) => (
+            <Fontisto name="dollar" size={24} color="black" /> 
+          ),
+        }}/>
+      <Tab.Screen 
+        name="Special Activities" 
+        component={SpecialActivitiesScreen} 
+        options={{
+          tabBarIcon: ({}) => (
+            <AntDesign name="exclamation" size={24} color="black" /> 
+          ),
+        }}/>
     </Tab.Navigator>
     
   );
 }
 
 const App = () => {
-  const [activities, setActivities] = useState([]);
-
-  const addActivity = (newActivity) => {
-    setActivities((currentActivities) => [...currentActivities, newActivity]);
-  };
-
-  const providerValue = useMemo(() => ({ activities, setActivities, addActivity }), [activities]);
-
   return (
-    <ActivitiesContext.Provider value={providerValue}>
+    <ActivitiesProvider>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Start" component={StartScreen} options={{ headerShown: false }}/>
@@ -43,7 +52,7 @@ const App = () => {
           <Stack.Screen name="Add An Activity" component={AddActivityScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-    </ActivitiesContext.Provider>
+    </ActivitiesProvider>
   );
 };
 

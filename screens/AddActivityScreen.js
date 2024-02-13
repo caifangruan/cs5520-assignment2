@@ -16,12 +16,15 @@ const AddActivityScreen = ({ navigation }) => {
   
   const { addActivity } = useContext(ActivitiesContext);
 
+  // Handle saving the new activity
   const handleSave = () => {
     if (!activityType || isNaN(duration) || duration <= 0) {
       Alert.alert('Error', 'Please fill in all fields and ensure the data is valid.');
       return;
     }
 
+    // Create a new activity object with a unique ID 
+    //and add it using the context
     const durationNum = Number(duration);
     const newActivity = {
       id: uuidv4(), 
@@ -33,8 +36,7 @@ const AddActivityScreen = ({ navigation }) => {
     navigation.goBack();
     }
 
-   
-
+    // Handle date change from the date picker
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setIsDatePickerVisible(Platform.OS === 'ios'); 
@@ -66,7 +68,6 @@ const AddActivityScreen = ({ navigation }) => {
       />
       <Text style={styles.label}>Duration (min) *</Text>
       <InputField
-        // style={styles.input}
         placeholder="Duration (min)"
         value={duration}
         onChangeText={setDuration}

@@ -11,6 +11,8 @@ const SpecialActivitiesScreen = () => {
   console.log(specialActivities);
   const navigation = useNavigation();
 
+  // useLayoutEffect hook to set options 
+  //for the navigation header on component mount/update
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -24,6 +26,7 @@ const SpecialActivitiesScreen = () => {
     });
   }, [navigation]);
 
+  // Render the component's view
   return (
     <View style={styles.container}>
       <ActivitiesList activities={specialActivities} keyPrefix="special" />

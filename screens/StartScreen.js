@@ -11,7 +11,9 @@ const StartScreen = ({ navigation }) => {
   const [emailError, setEmailError] = useState('');
   const [phoneError, setPhoneError] = useState('');
 
+  // Function to validate the email format
   const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
+  // Function to validate the phone number format (expects 10 digits)
   const validatePhoneNumber = (phoneNumber) => /^\d{10}$/.test(phoneNumber);
 
   const handleStart = () => {
@@ -25,6 +27,7 @@ const StartScreen = ({ navigation }) => {
     }
   };
 
+  // Function to handle the 'Reset' button press
   const handleReset = () => {
     setEmail('');
     setPhoneNumber('');
@@ -33,6 +36,7 @@ const StartScreen = ({ navigation }) => {
     setActivities([]);
   };
 
+  // Render the StartScreen UI
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Email Address</Text>

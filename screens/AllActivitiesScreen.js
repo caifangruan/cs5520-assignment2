@@ -7,10 +7,13 @@ import Header from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { colors, spacing } from '../components/styles';
 
+// Define the AllActivitiesScreen functional component
 const AllActivitiesScreen = () => {
   const { activities } = useContext(ActivitiesContext);
   const navigation = useNavigation();
 
+  // useLayoutEffect hook to set options 
+  //for the navigation header on component update
   useLayoutEffect(() => {
     navigation.setOptions({
     headerShown: true,
@@ -25,6 +28,7 @@ const AllActivitiesScreen = () => {
     });
   }, [navigation]);
 
+  // Render the component's view
   return (
     <View style={styles.container}>
       
