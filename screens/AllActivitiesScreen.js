@@ -1,4 +1,4 @@
-
+import { Fontisto } from '@expo/vector-icons';
 import React, { useContext, useLayoutEffect } from 'react';
 import { Button, View, StyleSheet } from 'react-native';
 import ActivitiesList from '../components/ActivitiesList';
