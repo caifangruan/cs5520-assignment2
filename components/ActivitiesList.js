@@ -1,62 +1,103 @@
 
 import React from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { colors, spacing, typography } from './styles';
 import { FontAwesome6 } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
+import CardComponent from "./CardComponent";
+import { colors, spacing } from './styles'; 
 
 const ActivitiesList = ({ activities }) => {
-  const renderItem = ({ item }) => (
-    <View style={styles.itemContainer}>
-      <View style={styles.activityDetails}>
-        <Text style={styles.activityType}>
-          {item.type}
-          {item.duration > 60 && (
-            <FontAwesome6 name="triangle-exclamation" size={24} color="black" style={styles.iconStyle} />
+  const renderItem = ({ item }) => {
+    return(
+    <View>
+      <CardComponent
+        flexDirection="row"
+        alignItems = 'center'
+        color={colors.activityItem}
+        width={350}
+        height={45}
+        radius={10}
+        marginBottom={15}
+      >
+      <View style={styles.activityItem}>
+      <Text style={styles.activity}>{item.type}</Text>
+      {(item.type == 'Running' || item.type == 'Weights') && item.duration > 60 && (
+             <Ionicons
+             name="warning"
+             size={18}
+             color={colors.warningSign}
+           ></Ionicons>
           )}
-        </Text>
-        <Text style={styles.activityInfo}>{`${item.date}   -   ${item.duration} mins`}</Text>
       </View>
+      <View style={styles.activityDetails}>
+          <CardComponent
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              color="white"
+              width={120}
+              height={25}
+              radius={3}
+              marginRight={10}
+          >
+          <Text style={styles.activityInfo}>{`${item.date.toDateString()}`}</Text>
+          </CardComponent>
+          <CardComponent
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              color={colors.activityDetails}
+              width={80}
+              height={25}
+              radius={3}
+              marginRight={10}
+          >
+            <Text style={styles.activityInfo}>{`${item.duration} mins`}</Text>
+          </CardComponent>
+      </View>
+      </CardComponent>
     </View>
-  );
+  );}
 
   return (
     <FlatList
+      contentContainerStyle={styles.listContainer}
       data={activities}
       renderItem={renderItem}
       keyExtractor={item => item.id.toString()}
-      contentContainerStyle={styles.listContainer}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  listContainer: {
-    padding: spacing.small,
+  activityList:{
+    alignItems: "center",
   },
-  itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.secondary,
-    padding: spacing.medium,
-    marginVertical: spacing.small,
-    borderRadius: spacing.xsmall,
+  listContainer: {
+    alignItems: "center",
+  },
+  activityItem:{
+    flexDirection: "row",
+    width:'35%'
+  },
+  activity:{
+    color: colors.activity,
+    paddingLeft: 10,
+    paddingRight: 25,
+    fontSize: 15,
+    fontWeight: "bold",
   },
   activityDetails: {
-    flex: 1,
-  },
-  iconStyle: {
-    marginLeft: spacing.small, 
+    flexDirection: "row",
+    alignItems: "center",
+    width:'65%',
   },
   activityType: {
-    fontSize: typography.title.fontSize,
-    fontWeight: typography.title.fontWeight,
-    color: colors.text,
-    flexDirection: 'row', 
-    alignItems: 'center', 
+    alignItems: "center",
   },
   activityInfo: {
-    fontSize: typography.body.fontSize,
-    color: colors.text,
+    fontSize:12,
+    fontWeight: "bold",
   },
 });
 

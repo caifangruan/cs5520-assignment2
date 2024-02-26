@@ -10,15 +10,12 @@ export const ActivitiesProvider = ({ children }) => {
     setActivities((currentActivities) => [...currentActivities, activity]);
     console.log('New activity:', activity);
 
-    if (activity.duration > 60) {
+    if ((activity.type == 'Running' || activity.type == 'Weights') && activity.duration > 60) {
         console.log('Adding special activity:', activity); 
       setSpecialActivities((currentSpecialActivities) => [...currentSpecialActivities, { ...activity }]);
     }
   };
   
-  
-  
-
   
   const addSpecialActivity = (activity) => {
     setSpecialActivities((currentSpecialActivities) => [...currentSpecialActivities, activity]);

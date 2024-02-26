@@ -10,6 +10,11 @@ export const colors = {
     button: 'transparent',
     buttonText: '#',
     background: 'lightblue', 
+    contentColor: "lavender",
+    activityItem:'#89CFF0',
+    activity: "white",
+    activityDetails:'white',
+    warningSign: "gold",
   };
   
   export const spacing = {

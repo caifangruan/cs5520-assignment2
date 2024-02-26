@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { colors, spacing } from '../components/styles';
 
+
 const SpecialActivitiesScreen = () => {
   const { specialActivities } = useContext(ActivitiesContext);
   console.log(specialActivities);

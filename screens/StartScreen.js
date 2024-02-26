@@ -33,7 +33,7 @@ const StartScreen = ({ navigation }) => {
     setPhoneNumber('');
     setEmailError('');
     setPhoneError('');
-    setActivities([]);
+  
   };
 
   // Render the StartScreen UI
@@ -68,7 +68,7 @@ const StartScreen = ({ navigation }) => {
         <Button
           title="Start"
           onPress={handleStart}
-          textColor={colors.primary} 
+          textColor={email.length > 0 || phoneNumber.length > 0 ? colors.primary : 'white'}
         />
       </View>
     </View>

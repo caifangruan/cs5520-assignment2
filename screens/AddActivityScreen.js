@@ -30,7 +30,7 @@ const AddActivityScreen = ({ navigation }) => {
       id: uuidv4(), 
       type: activityType,
       duration: durationNum,
-      date: date.toISOString().split('T')[0], 
+      date: date, 
     };
     addActivity(newActivity);
     navigation.goBack();
@@ -50,14 +50,13 @@ const AddActivityScreen = ({ navigation }) => {
         open={isActivityPickerOpen}
         value={activityType}
         items={[
+          { label: 'Walking', value: 'Walking' },
+          { label: 'Running', value: 'Running' },
           { label: 'Swimming', value: 'Swimming' },
           { label: 'Weights', value: 'Weights' },
           { label: 'Yoga', value: 'Yoga' },
           { label: 'Cycling', value: 'Cycling' },
           { label: 'Hiking', value: 'Hiking' },
-          { label: 'Running', value: 'Running' },
-          { label: 'Walking', value: 'Walking' },
-          { label: 'Basketball', value: 'Basketball' },
         ]}
         setOpen={setIsActivityPickerOpen}
         setValue={setActivityType}
@@ -66,6 +65,8 @@ const AddActivityScreen = ({ navigation }) => {
         style={styles.dropdown}
         dropDownStyle={styles.dropdownStyle}
       />
+      <View style={{ height: 16 }} />
+
       <Text style={styles.label}>Duration (min) *</Text>
       <InputField
         placeholder="Duration (min)"
@@ -73,6 +74,8 @@ const AddActivityScreen = ({ navigation }) => {
         onChangeText={setDuration}
         keyboardType="numeric"
       />
+      <View style={{ height: 16 }} />
+      
       <Text style={styles.label}>Date *</Text>
       <TouchableOpacity style={styles.dateInput} onPress={() => setIsDatePickerVisible(true)}>
         <Text>{date.toDateString()}</Text>
@@ -87,8 +90,8 @@ const AddActivityScreen = ({ navigation }) => {
         />
       )}
       <View style={styles.buttonContainer}>
-        <Button title="Save" onPress={handleSave} />
         <Button title="Cancel" onPress={() => navigation.goBack()} />
+        <Button title="Save" onPress={handleSave} />
       </View>
     </View>
   );
@@ -121,12 +124,10 @@ const styles = StyleSheet.create({
   dateInput: {
     padding: 10,
     backgroundColor: colors.secondary,
-    marginVertical: spacing.medium,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: spacing.medium,
   },
   label: {
     fontSize: 16,
