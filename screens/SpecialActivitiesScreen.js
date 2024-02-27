@@ -1,15 +1,14 @@
-import React, { useContext, useLayoutEffect } from 'react';
-import { Button, View, StyleSheet } from 'react-native';
-import ActivitiesList from '../components/ActivitiesList';
-import ActivitiesContext from '../components/ActivitiesContext';
+import React, { useLayoutEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 import Header from '../components/Header'; 
 import { useNavigation } from '@react-navigation/native';
 import { colors, spacing } from '../components/styles';
-
+import { collection, query, where } from "firebase/firestore";
+import { db } from "../Firebase/Firebase-setup";
+import ActivityList from '../components/ActivityList';
 
 const SpecialActivitiesScreen = () => {
-  const { specialActivities } = useContext(ActivitiesContext);
-  console.log(specialActivities);
+
   const navigation = useNavigation();
 
   // useLayoutEffect hook to set options 
@@ -17,20 +16,24 @@ const SpecialActivitiesScreen = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      headerTitle: () => <Header title="Special Activities" />,
-      headerRight: () => (
-        <Button
-          onPress={() => navigation.navigate('Add An Activity')}
-          title="Add"
-        />
-      ),
+      headerTitle: () => <Header title="Special Activities" />
     });
   }, [navigation]);
+  
+  const q = query(
+    collection(db, "activities"),
+    where("isSpecial", "==", true),
+  );
+
+  function navigate(activities) {
+    navigation.navigate("Edit Activity", { activitiesItem: activities });
+  }
+
 
   // Render the component's view
   return (
     <View style={styles.container}>
-      <ActivitiesList activities={specialActivities} keyPrefix="special" />
+      <ActivityList query={q} EntriesPressed={navigate} />
     </View>
   );
 };
