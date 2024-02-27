@@ -1,9 +1,9 @@
 
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Text, View, StyleSheet, Alert } from 'react-native';
 import InputField from '../components/InputField';
-import Button from '../components/Button'; 
 import { colors, spacing } from '../components/styles'; 
+import PressableButton from '../components/PressableButton';
 
 const StartScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -33,7 +33,6 @@ const StartScreen = ({ navigation }) => {
     setPhoneNumber('');
     setEmailError('');
     setPhoneError('');
-  
   };
 
   // Render the StartScreen UI
@@ -60,16 +59,28 @@ const StartScreen = ({ navigation }) => {
       {phoneError ? <Text style={styles.errorText}>{phoneError}</Text> : null}
 
       <View style={styles.buttonContainer}>
-        <Button 
-          title="Reset" 
-          onPress={handleReset} 
-          textColor={colors.error} 
-        />
-        <Button
-          title="Start"
-          onPress={handleStart}
-          textColor={email.length > 0 || phoneNumber.length > 0 ? colors.primary : 'white'}
-        />
+        <PressableButton
+          customizedStyle={{ 
+            height: 35,
+            width: 100,
+          }}
+          buttonPressed={() => {
+            handleReset();
+          }}
+        >
+          <Text style={{ color: colors.error }}>Reset</Text>
+        </PressableButton>
+        <PressableButton
+          customizedStyle={{
+            height: 35,
+            width: 100,
+          }}
+          buttonPressed={() => {
+            handleStart();
+          }}
+        >
+          <Text style={{ color: (email.length > 0 || phoneNumber.length > 0) ? colors.primary : 'white' }}>Start</Text>
+        </PressableButton>
       </View>
     </View>
   );
