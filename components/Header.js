@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
       
     },
     headerTitle: {
-      color: "black",
+      color: 'black',
       fontSize: 20,
       padding: 10,
       borderRadius: 5,

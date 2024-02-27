@@ -1,20 +1,26 @@
 //style file
 export const colors = {
     primary: '#007AFF', 
-    secondary: '#FFFFFF', 
+    secondary: 'white', 
     text: '#0A0A0A', 
     error: '#FF3B30', 
     disabled: '#C7C7CC', 
     border: '#C7C7CC', 
-    headerText: '#FFFFFF',
+    headerText: '#black',
     button: 'transparent',
-    buttonText: '#',
-    background: 'lightblue', 
+    buttonText: 'black',
+    background: 'lightblue',
+    headerTabColor: "#645CBB", 
+    headerTintColor: "white",
+    tabIconColor:'#89CFF0',
     contentColor: "lavender",
     activityItem:'#89CFF0',
     activity: "white",
     activityDetails:'white',
     warningSign: "gold",
+    headerTabColor: "#645CBB",
+    rippleEffect: "#B1AFFF",
+    buttonEffect: "rgba(210, 230, 255, 0.1)",
   };
   
   export const spacing = {

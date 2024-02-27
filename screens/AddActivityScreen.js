@@ -1,11 +1,8 @@
-import InputField from '../components/InputField';
-import React, { useState, useContext } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { View, StyleSheet, Button, Alert, Platform, Text, TouchableOpacity, TextInput } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import ActivitiesContext from '../components/ActivitiesContext'; 
-import { colors, spacing } from '../components/styles'; 
+import React, { useState } from 'react';
+import { View, StyleSheet, Alert, Platform, Text } from 'react-native';
+import { writeToDB } from '../Firebase/Firebase-helper';
+import AddActivity from '../components/AddActivity';
+
 
 const AddActivityScreen = ({ navigation }) => {
   const [activityType, setActivityType] = useState(null);
@@ -14,126 +11,56 @@ const AddActivityScreen = ({ navigation }) => {
   const [isActivityPickerOpen, setIsActivityPickerOpen] = useState(false);
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   
-  const { addActivity } = useContext(ActivitiesContext);
-
-  // Handle saving the new activity
+  // Handle saving the new activit
   const handleSave = () => {
     if (!activityType || isNaN(duration) || duration <= 0) {
       Alert.alert('Error', 'Please fill in all fields and ensure the data is valid.');
       return;
     }
-
-    // Create a new activity object with a unique ID 
-    //and add it using the context
-    const durationNum = Number(duration);
-    const newActivity = {
-      id: uuidv4(), 
-      type: activityType,
-      duration: durationNum,
-      date: date, 
-    };
-    addActivity(newActivity);
+    else {
+    OnTextEnterDB();
     navigation.goBack();
     }
+  }
 
-    // Handle date change from the date picker
+  // Handle date change from the date picker
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setIsDatePickerVisible(Platform.OS === 'ios'); 
+    setIsDatePickerVisible(false);
     setDate(currentDate);
   };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Activity *</Text>
-      <DropDownPicker
-        open={isActivityPickerOpen}
-        value={activityType}
-        items={[
-          { label: 'Walking', value: 'Walking' },
-          { label: 'Running', value: 'Running' },
-          { label: 'Swimming', value: 'Swimming' },
-          { label: 'Weights', value: 'Weights' },
-          { label: 'Yoga', value: 'Yoga' },
-          { label: 'Cycling', value: 'Cycling' },
-          { label: 'Hiking', value: 'Hiking' },
-        ]}
-        setOpen={setIsActivityPickerOpen}
-        setValue={setActivityType}
-        zIndex={3000}
-        containerStyle={styles.dropdownContainer}
-        style={styles.dropdown}
-        dropDownStyle={styles.dropdownStyle}
-      />
-      <View style={{ height: 16 }} />
+  function OnTextEnterDB() {
+    const durationNum = Number(duration);
+    const newActivity = {
+      activityType: activityType,
+      duration: durationNum,
+      date: date.toDateString(), 
+      isSpecial: (activityType == 'Running' || activityType == 'Weights') && duration > 60,
+    };
+    writeToDB(newActivity);
+  }
+  function backtoPreviousPage(){
+    navigation.goBack()
+  }
 
-      <Text style={styles.label}>Duration (min) *</Text>
-      <InputField
-        placeholder="Duration (min)"
-        value={duration}
-        onChangeText={setDuration}
-        keyboardType="numeric"
-      />
-      <View style={{ height: 16 }} />
-      
-      <Text style={styles.label}>Date *</Text>
-      <TouchableOpacity style={styles.dateInput} onPress={() => setIsDatePickerVisible(true)}>
-        <Text>{date.toDateString()}</Text>
-      </TouchableOpacity>
-      {isDatePickerVisible && (
-        <DateTimePicker
-          value={date}
-          mode="date"
-          display={Platform.OS === 'ios' ? 'inline' : 'default'}
-          onChange={handleDateChange}
-          maximumDate={new Date()}
-        />
-      )}
-      <View style={styles.buttonContainer}>
-        <Button title="Cancel" onPress={() => navigation.goBack()} />
-        <Button title="Save" onPress={handleSave} />
-      </View>
-    </View>
+  return (
+    <AddActivity
+    handleSave={handleSave}
+    handleDateChange={handleDateChange}
+    activityType ={activityType}
+    setActivityType ={setActivityType}
+    duration={duration}
+    setDuration={setDuration}
+    date = {date}
+    isActivityPickerOpen ={isActivityPickerOpen}
+    setIsActivityPickerOpen = {setIsActivityPickerOpen}
+    isDatePickerVisible ={isDatePickerVisible}
+    setIsDatePickerVisible = {setIsDatePickerVisible}
+    isSpecial={false}
+    backtoPrevious={backtoPreviousPage}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: spacing.medium,
-    backgroundColor: colors.background,
-  },
-  dropdownContainer: {
-    height: 40,
-    marginBottom: spacing.medium,
-  },
-  dropdown: {
-    backgroundColor: colors.secondary,
-  },
-  dropdownStyle: {
-    backgroundColor: colors.secondary,
-  },
-  input: {
-    height: 40,
-    borderColor: colors.secondary,
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: spacing.medium,
-    paddingHorizontal: spacing.medium,
-  },
-  dateInput: {
-    padding: 10,
-    backgroundColor: colors.secondary,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: spacing.xsmall,
-    color: colors.text,
-  },
-});
 
 export default AddActivityScreen;

@@ -1,14 +1,13 @@
-
-import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { FontAwesome6 } from '@expo/vector-icons';
+import { View, Text, StyleSheet } from "react-native";
+import React from "react";
+import PressableButton from "./PressableButton";
 import { Ionicons } from "@expo/vector-icons";
 import CardComponent from "./CardComponent";
-import { colors, spacing } from './styles'; 
+import { colors } from "./styles";
 
-const ActivitiesList = ({ activities }) => {
-  const renderItem = ({ item }) => {
-    return(
+
+export default function AcitivityItem({ entries, editEntriesPressed }) {
+  return (
     <View>
       <CardComponent
         flexDirection="row"
@@ -19,9 +18,20 @@ const ActivitiesList = ({ activities }) => {
         radius={10}
         marginBottom={15}
       >
+      <PressableButton
+          customizedStyle={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: 300,
+          }}
+          buttonPressed={() => {
+            editEntriesPressed();
+          }}
+      >
       <View style={styles.activityItem}>
-      <Text style={styles.activity}>{item.type}</Text>
-      {(item.type == 'Running' || item.type == 'Weights') && item.duration > 60 && (
+      <Text style={styles.activity}>{entries.activityType}</Text>
+       {entries.isSpecial && (
              <Ionicons
              name="warning"
              size={18}
@@ -29,20 +39,20 @@ const ActivitiesList = ({ activities }) => {
            ></Ionicons>
           )}
       </View>
-      <View style={styles.activityDetails}>
-          <CardComponent
+            <View style={styles.activityDetails}>
+            <CardComponent
               flexDirection="column"
               justifyContent="center"
               alignItems="center"
               color="white"
-              width={120}
+              width={150}
               height={25}
               radius={3}
               marginRight={10}
-          >
-          <Text style={styles.activityInfo}>{`${item.date.toDateString()}`}</Text>
-          </CardComponent>
-          <CardComponent
+            >
+              <Text style={styles.activityInfo}>{entries.date}</Text>
+            </CardComponent>
+            <CardComponent
               flexDirection="column"
               justifyContent="center"
               alignItems="center"
@@ -51,24 +61,15 @@ const ActivitiesList = ({ activities }) => {
               height={25}
               radius={3}
               marginRight={10}
-          >
-            <Text style={styles.activityInfo}>{`${item.duration} mins`}</Text>
+              >
+            <Text style={styles.activityInfo}>{`${entries.duration} mins`}</Text>
           </CardComponent>
-      </View>
+          </View>
+        </PressableButton>
       </CardComponent>
     </View>
-  );}
-
-  return (
-    <FlatList
-      contentContainerStyle={styles.listContainer}
-      data={activities}
-      renderItem={renderItem}
-      keyExtractor={item => item.id.toString()}
-    />
   );
-};
-
+}
 const styles = StyleSheet.create({
   activityList:{
     alignItems: "center",
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
   activity:{
     color: colors.activity,
     paddingLeft: 10,
-    paddingRight: 25,
+    paddingRight: 15,
     fontSize: 15,
     fontWeight: "bold",
   },
@@ -100,5 +101,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
-export default ActivitiesList;

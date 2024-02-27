@@ -1,38 +1,38 @@
-import { Fontisto } from '@expo/vector-icons';
-import React, { useContext, useLayoutEffect } from 'react';
-import { Button, View, StyleSheet } from 'react-native';
-import ActivitiesList from '../components/ActivitiesList';
-import ActivitiesContext from '../components/ActivitiesContext';
+
+import React, { useLayoutEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 import Header from '../components/Header'; 
-import { useNavigation } from '@react-navigation/native';
 import { colors, spacing } from '../components/styles';
+import { collection, query } from "firebase/firestore";
+import { db } from "../Firebase/Firebase-setup";
+import ActivityList from '../components/ActivityList';
 
 // Define the AllActivitiesScreen functional component
-const AllActivitiesScreen = () => {
-  const { activities } = useContext(ActivitiesContext);
-  const navigation = useNavigation();
+const AllActivitiesScreen = ({ navigation }) => {
+  
+  const q = query(collection(db, "activities"));
+
+  /**
+   * Function to navigate to EditEntries screen
+   * @param entries: pass the entries item to the EditEntries screen
+   */
+  function navigate(activities) {
+    navigation.navigate("Edit Activity", { activitiesItem: activities });
+  }
 
   // useLayoutEffect hook to set options 
   //for the navigation header on component update
   useLayoutEffect(() => {
     navigation.setOptions({
     headerShown: true,
-      headerTitle: () => <Header title="All Activities" />,
-      headerRight: () => (
-        <Button
-          onPress={() => navigation.navigate('Add An Activity')}
-          title="Add"
-          
-        />
-      ),
+      headerTitle: () => <Header title="All Activities" />
     });
   }, [navigation]);
 
   // Render the component's view
   return (
     <View style={styles.container}>
-      
-      <ActivitiesList activities={activities} keyPrefix="all" />
+     <ActivityList query={q} EntriesPressed={navigate} />
     </View>
   );
 };
